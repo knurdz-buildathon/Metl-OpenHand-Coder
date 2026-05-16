@@ -1,4 +1,4 @@
-"""Dashboard settings page."""
+// Dashboard settings page.
 "use client";
 
 import { useState } from "react";

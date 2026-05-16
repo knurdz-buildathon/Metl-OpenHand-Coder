@@ -2,9 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   transpilePackages: ["@metl/shared", "@metl/browser-agent", "@metl/cursor-sdk-plugin"],
-  experimental: {
-    serverComponentsExternalPackages: ["playwright", "@playwright/test"],
-  },
+  serverExternalPackages: ["playwright", "@playwright/test"],
   async rewrites() {
     if (process.env.NODE_ENV === "development") {
       return [
