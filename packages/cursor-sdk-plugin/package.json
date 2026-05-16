@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@metl/shared": "workspace:*",
-    "@cursor/sdk": "^0.1.0",
     "zod": "^3.24.0"
   },
   "devDependencies": {
