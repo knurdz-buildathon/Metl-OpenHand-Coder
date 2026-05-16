@@ -1,8 +1,6 @@
-version: "3.9"
-
 services:
   traefik:
-    image: traefik:v3-alpine
+    image: traefik:v3.3
     container_name: metl-traefik
     ports:
       - "80:80"
