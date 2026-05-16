@@ -10,7 +10,7 @@ COPY packages/shared/package.json ./packages/shared/
 COPY packages/browser-agent/package.json ./packages/browser-agent/
 COPY packages/cursor-sdk-plugin/package.json ./packages/cursor-sdk-plugin/
 
-RUN pnpm install
+RUN pnpm install --allow-build
 
 FROM base AS builder
 WORKDIR /app
