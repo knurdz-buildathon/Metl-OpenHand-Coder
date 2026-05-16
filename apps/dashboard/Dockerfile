@@ -10,7 +10,7 @@ COPY packages/shared/package.json ./packages/shared/
 COPY packages/browser-agent/package.json ./packages/browser-agent/
 COPY packages/cursor-sdk-plugin/package.json ./packages/cursor-sdk-plugin/
 
-RUN pnpm install --frozen-lockfile
+RUN pnpm install
 
 FROM base AS builder
 WORKDIR /app
