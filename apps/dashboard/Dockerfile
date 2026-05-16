@@ -1,7 +1,7 @@
 FROM node:22-alpine AS base
+RUN corepack enable && corepack prepare pnpm@9 --activate
 
 FROM base AS deps
-RUN corepack enable && corepack prepare pnpm@9 --activate
 WORKDIR /app
 
 COPY pnpm-workspace.yaml package.json .npmrc ./
