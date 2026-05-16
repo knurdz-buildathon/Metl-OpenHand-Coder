@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: "standalone",
   reactStrictMode: true,
   transpilePackages: ["@metl/shared", "@metl/browser-agent", "@metl/cursor-sdk-plugin"],
   serverExternalPackages: ["playwright", "@playwright/test"],
