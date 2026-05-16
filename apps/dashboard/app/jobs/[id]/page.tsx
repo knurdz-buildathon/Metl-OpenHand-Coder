@@ -165,7 +165,11 @@ export default function JobDetailPage() {
 
       <LogStream jobId={id as string} />
 
-      <ReportViewer jobId={id as string} />
+      <ReportViewer
+        browserReport={job.browser_report}
+        completionReport={job.completion_report}
+        jobStatus={job.status}
+      />
     </div>
   );
 }
