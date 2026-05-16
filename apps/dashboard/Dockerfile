@@ -15,13 +15,13 @@ RUN pnpm install
 FROM base AS builder
 WORKDIR /app
 
-COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app .
 COPY . .
 
 ARG NEXT_PUBLIC_API_URL=/api
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
-RUN cd apps/dashboard && pnpm run build
+RUN pnpm --filter @metl/dashboard build
 
 FROM base AS runner
 WORKDIR /app
