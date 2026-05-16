@@ -1,0 +1,72 @@
+## Traefik dynamic configuration
+## Routers, services, and middlewares defined here
+## Docker labels on services in docker-compose.yml also define routing
+
+http:
+  middlewares:
+    api-stripprefix:
+      stripPrefix:
+        prefixes:
+          - "/api"
+        forceSlash: false
+
+    security-headers:
+      headers:
+        frameDeny: true
+        browserXssFilter: true
+        contentTypeNosniff: true
+        referrerPolicy: "strict-origin-when-cross-origin"
+
+  routers:
+    api-router:
+      rule: "Host(`code.metl.run`) && PathPrefix(`/api`)"
+      service: agent-api
+      middlewares:
+        - api-stripprefix
+        - security-headers
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: letsencrypt
+
+    api-websocket:
+      rule: "Host(`code.metl.run`) && PathPrefix(`/api`) && HeadersRegexp(`Upgrade`, `websocket`)"
+      service: agent-api
+      middlewares:
+        - api-stripprefix
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: letsencrypt
+
+    dashboard-router:
+      rule: "Host(`code.metl.run`) && !PathPrefix(`/api`)"
+      service: dashboard
+      middlewares:
+        - security-headers
+      priority: 10
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: letsencrypt
+
+    traefik-dashboard:
+      rule: "Host(`code.metl.run`) && PathPrefix(`/traefik`)"
+      service: api@internal
+      middlewares:
+        - security-headers
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: letsencrypt
+
+  services:
+    agent-api:
+      loadBalancer:
+        servers:
+          - url: "http://agent-api:8000"
+
+    dashboard:
+      loadBalancer:
+        servers:
+          - url: "http://dashboard:3000"

@@ -1,0 +1,61 @@
+version: "3.9"
+
+services:
+  traefik:
+    image: traefik:v3-alpine
+    container_name: metl-traefik
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./traefik-dynamic.yml:/etc/traefik/dynamic.yml:ro
+      - ./acme.json:/acme.json
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - metl-network
+    restart: unless-stopped
+
+  agent-api:
+    build:
+      context: ./apps/agent-api
+      dockerfile: Dockerfile
+    container_name: metl-agent-api
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=${DATABASE_URL:-sqlite+aiosqlite:///app/data/metl.db}
+      - PREVIEW_BASE_DOMAIN=${PREVIEW_BASE_DOMAIN:-code.metl.run}
+      - PREVIEW_PORT_RANGE_START=${PREVIEW_PORT_RANGE_START:-9000}
+      - PREVIEW_PORT_RANGE_END=${PREVIEW_PORT_RANGE_END:-9100}
+    expose:
+      - "8000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - metl-repos:/repos
+      - ./data:/app/data
+    networks:
+      - metl-network
+    restart: unless-stopped
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: apps/dashboard/Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-/api}
+    container_name: metl-dashboard
+    expose:
+      - "3000"
+    depends_on:
+      - agent-api
+    networks:
+      - metl-network
+    restart: unless-stopped
+
+networks:
+  metl-network:
+    driver: bridge
+
+volumes:
+  metl-repos:

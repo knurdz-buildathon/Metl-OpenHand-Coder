@@ -1,0 +1,17 @@
+{
+  "name": "metl-coding-agent",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Metl Autonomous Cloud Coding Agent - Orchestrates OpenHands for fully autonomous development",
+  "scripts": {
+    "dev": "pnpm --filter @metl/dashboard dev",
+    "build": "pnpm --filter @metl/dashboard build",
+    "api": "pnpm --filter @metl/agent-api dev",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  }
+}

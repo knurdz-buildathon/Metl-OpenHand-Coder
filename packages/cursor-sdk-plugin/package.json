@@ -1,0 +1,21 @@
+{
+  "name": "@metl/cursor-sdk-plugin",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Optional Cursor Agent SDK plugin for agent orchestration - wrapped behind interface for easy removal",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./adapter": "./src/adapter.ts",
+    "./types": "./src/types.ts"
+  },
+  "dependencies": {
+    "@metl/shared": "workspace:*",
+    "@cursor/sdk": "^0.1.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0"
+  }
+}
